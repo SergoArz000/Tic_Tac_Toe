@@ -1,7 +1,12 @@
 const buttonsContainer = document.querySelector(".buttonsContainer");
 let buttons = document.querySelectorAll(".button");
-let winCount = 0;
-
+let playerStat = document.querySelector(".player"); 
+let tieStat = document.querySelector(".tie") ;
+let computerStat = document.querySelector(".computer"); 
+let wonStatus = false;
+let xWins = 1;
+let oWins = 1;
+let tieCount = 1;
 // 										FUNCTIONS FOR BREVITY
 let randomNum = ( length ) => {
 	return Math.round( Math.random() * length );
@@ -35,17 +40,25 @@ let winCheck = ( char ) => {
 	    ||
 	    buttons[2].innerHTML === char && buttons[5].innerHTML === char && buttons[8].innerHTML === char  
 		) {
-		winCount++
-		if ( winCount === 1 ) {
-			console.log(`${char} =>  wins `);	
-			buttonsContainer.removeEventListener( "click" , handler )
-		}
+			if ( char === "X" ) {
+				playerStat.innerHTML = xWins;
+				xWins++;
+				wonStatus = true;
+			} else if( char === "O" ) {
+				computerStat.innerHTML = oWins;
+				oWins++;
+				wonStatus = true;
+			}
+			buttonsContainer.removeEventListener( "click" , handler );
+			buttonsContainer.addEventListener( "click" , startAgain );
 	} else if ( buttonsCheck() ) { 
-		console.log("nichya");
+		tieStat.innerHTML = tieCount;
+		tieCount++;
+		wonStatus = true;
+		buttonsContainer.removeEventListener( "click" , handler );
+		buttonsContainer.addEventListener( "click" , startAgain );
 	}
 }
-
-
 
 let autoPicker = () => {
 	let buttonNodes = document.querySelectorAll(".empty");
@@ -55,12 +68,24 @@ let autoPicker = () => {
 		return;
 	}
 
-	if ( buttonsArr[num].innerHTML === ""  ) {
-		buttonsArr[num].innerHTML = "O";
-		buttonsArr[num].classList.add("O");
-		buttonsArr[num].classList.remove("empty");
-		winCheck( "O" );
+	if ( buttonsArr[num].innerHTML === "" && !wonStatus ) {
+			buttonsArr[num].innerHTML = "O";
+			buttonsArr[num].classList.add("O");
+			buttonsArr[num].classList.remove("empty");
+			winCheck( "O" );
 	}
+}
+
+function startAgain() {
+		wonStatus = false;
+	for ( let btn of buttons ) {
+		btn.classList.remove( "X" );
+		btn.classList.remove( "O" );
+		btn.classList.add( "empty" );
+		btn.innerHTML = "";
+		buttonsContainer.addEventListener( "click"  , handler );
+		buttonsContainer.removeEventListener( "click"  , startAgain );
+	}	
 }
 
 //										ADDING EVENT 
