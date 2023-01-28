@@ -74,6 +74,7 @@ body {
 
 @media ( max-width: 500px ) {
 	.buttonsContainer {
+		margin-top: 100px;
 		width: 300px;
 		height: 300px;
 		font-size: 3rem;
@@ -84,8 +85,16 @@ body {
 		line-height: 100px;
 	}
 
+	.button:hover {
+		background-color: black;
+	}
+
+	.button:active {
+		background-color: black;
+	}
+
 	.stats {
-		width: 100%;
+		width: 300px;
 		line-height: 30px;
 		font-size: 0.9rem;
 		margin-top: 75px;
